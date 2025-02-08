@@ -36,10 +36,10 @@ const Dashboard = () => {
     }
   }
 
-  // call fetchTokenData immediately and then every 60 seconds.
+  // call fetchTokenData immediately and then every 6 seconds.
   useEffect(() => {
     void fetchTokenData();
-    const intervalId = setInterval(() => void fetchTokenData(), 60000);
+    const intervalId = setInterval(() => void fetchTokenData(), 6000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -54,7 +54,7 @@ const Dashboard = () => {
         <TokenVolumeBarChart tokensData={tokensData} />
       </div>
       <span className="text-muted-foreground">
-        Live ETH Token Price Data (Updated Every 10 Seconds)
+        Live ETH Token Price Data (Updated Every 6 Seconds)
       </span>
     </>
   );
