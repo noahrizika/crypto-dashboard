@@ -10,7 +10,7 @@ This is a NextJS14 web application, using Typescript, TailwindCSS, and BitQuery.
 
 *Features*
 - Quickly find the latest information on ethereum-based cryptocurrencies
-- Friendly UI with easily-digestible visualizations
+- Friendly UI with easily-digestible visualizations (using Shadcn components)
 
 ## Getting Started
 
