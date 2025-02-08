@@ -8,7 +8,7 @@ export const token24HrPricesQuery = (yesterdayUTC: string) => {
             EVM(dataset: combined) {
               DEXTrades(
                 orderBy: {descending: Block_Time}
-                where: {Trade: {Success: true, Buy: {Currency: {SmartContract: {is: "${token.smartContract}"}}}}, Block: {Time: {after: "${yesterdayUTC}"}}}
+                where: {Trade: {Success: true, Buy: {Currency: {SmartContract: {is: "${token.smartContract}"}}, PriceInUSD: {gt: 0}}}, Block: {Time: {after: "${yesterdayUTC}"}}}
               ) {
                 Trade {
                   Buy {

@@ -57,7 +57,7 @@ export async function POST(): Promise<Response> {
           name: name,
           symbol: symbol,
           currPriceUSD: firstPrice,
-          volatility: (maxPrice - minPrice) * 100,
+          volatility: estimateVolatility({ high: maxPrice, low: minPrice }),
           priceMove: lastPrice === 0 ? 0 : (firstPrice - lastPrice) / lastPrice,
           volume: numBuys,
         };
@@ -80,4 +80,26 @@ export async function POST(): Promise<Response> {
       { status: 500 },
     );
   }
+}
+
+// using parkinson’s volatility estimator (https://www.ivolatility.com/education/parkinsons-historical-volatility/)
+function estimateVolatility({
+  high,
+  low,
+  timePeriod = 1, // default is 24 hours (aka 1 trading day)
+}: {
+  high: number;
+  low: number;
+  timePeriod?: number; // user can modify the period for future frontend scalability
+}): number {
+  console.log(high);
+  console.log(low);
+  const lowVal = low !== 0 ? low : 0.0001;
+  if (high <= 0 || lowVal < 0 || high <= low) {
+    throw new Error("Invalid high or low price values.");
+  }
+
+  const volatility =
+    (Math.log(high) - Math.log(low)) / Math.sqrt(4 * Math.log(2) * timePeriod);
+  return volatility;
 }

@@ -60,12 +60,18 @@ export default function TokenVolumeBarChart({
             axisLine={false}
             tick={{ fill: "var(--muted-foreground)" }}
             label={{
-              value: "",
+              value: "Number of Trades",
               angle: -90,
               position: "insideLeft",
-              style: { fill: "var(--muted-foreground)", fontSize: 12 },
+              offset: -10,
+              style: {
+                fill: "gray",
+                fontSize: 12,
+                textAnchor: "middle",
+              },
             }}
           />
+
           <Bar dataKey="volume" fill="#82ca9d" radius={[8, 8, 0, 0]}>
             <LabelList
               dataKey="volume"
