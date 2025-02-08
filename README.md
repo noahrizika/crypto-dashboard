@@ -1,29 +1,64 @@
-# Create T3 App
+<div align="center">
+  <h2>Cryptocurrency Dashboard</h2>
+  <p>Live Ethereum Cryptocurrency Prices and Statistics Updates</p>
+  <p>Made by <a href="https://noahrizika.github.io/">Noah Rizika</a></p>
+</div>
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Application Overview
 
-## What's next? How do I make an app with this?
+This is a NextJS14 web application, using Typescript, TailwindCSS, and BitQuery. It features live updates for tokens on the Ethereum blockchain using BitQuery's APIv2.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+*Features*
+- Quickly find the latest information on ethereum-based cryptocurrencies
+- Friendly UI with easily-digestible visualizations (using Shadcn components)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Getting Started
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### 1. Clone this repository 
 
-## Learn More
+```bash
+git clone https://github.com/noahrizika/crypto-dashboard.git
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### 2. Install dependencies
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+```bash
+npm install
+```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### 3. Upload your API keys
 
-## How do I deploy this?
+Place your BitQuery Access Token in a new .env file.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Example .env file:  
+BITQUERY_ACCESS_TOKEN='YOUR_ACCESS_TOKEN_HERE'  
+BITQUERY_GRAPHQL_URL='https://streaming.bitquery.io/graphql'
+
+### 4. Run the development server
+
+You can start the server using this command:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the webpage.
+
+## Architectural Decisions
+
+**Organizational Design**
+
+I used PascalCase for components and camelCase for all other variable names, folders and files.  
+Hardcoded data, such as types and token metadata, was stored in the lib folder. Components were oranized by functionality.  
+Errors with API fetching are handled gracefully with try...catch statements
+
+**Perfomance Optimizations and Latency**
+
+*Concurrency*  
+The array.**map()** function is used asynchronously to fetch data from BitQuery, expediting the delivery of data (for reference, see [here](https://stackoverflow.com/questions/43691808/http-performance-many-small-requests-or-one-big-one))
+
+*Low Latency*  
+Fetching price data for one token from Bitquery's IDE takes around **1.500s**. Fetching price data on two tokens takes over twice as long (~3.200s). Therefore, by individually and asynchronously querying tokens' price data, responses arrive with minimal latency. Further, the backend is easily scalable and can handle many more queries while maintaining low latency.
+
+*Isolation of Client Components*  
+Only the data visualizations are rerendered once new data is fetched—-not the entire webpage. Further, the client components created are as lightweight as possible, while still maintaing full functionality.
