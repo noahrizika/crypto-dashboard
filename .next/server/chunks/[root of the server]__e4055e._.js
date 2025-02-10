@@ -50,26 +50,10 @@ __turbopack_esm__({
     "topEthereumTokensMetadata": (()=>topEthereumTokensMetadata)
 });
 const topEthereumTokensMetadata = {
-    //used wETH instead of ETH since WETH used for DeFi
-    WBTC: {
-        name: "Wrapped Bitcoin",
-        symbol: "WBTC",
-        smartContract: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
-    },
-    STETH: {
-        name: "Lido Staked Ether",
-        symbol: "stETH",
-        smartContract: "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
-    },
     WETH: {
         name: "Wrapped Ethereum",
         symbol: "WETH",
         smartContract: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-    },
-    MATIC: {
-        name: "Polygon",
-        symbol: "MATIC",
-        smartContract: "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"
     },
     USDT: {
         name: "Tether",
@@ -81,15 +65,30 @@ const topEthereumTokensMetadata = {
         symbol: "USDC",
         smartContract: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eb48"
     },
+    WBTC: {
+        name: "Wrapped Bitcoin",
+        symbol: "WBTC",
+        smartContract: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+    },
     DAI: {
         name: "Dai",
         symbol: "DAI",
         smartContract: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
     },
+    MATIC: {
+        name: "Polygon",
+        symbol: "MATIC",
+        smartContract: "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"
+    },
     SHIB: {
         name: "Shiba Inu",
         symbol: "SHIB",
         smartContract: "0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE"
+    },
+    STETH: {
+        name: "Lido Staked Ether",
+        symbol: "stETH",
+        smartContract: "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
     }
 };
 const topEthereumTokenSymbols = Object.keys(topEthereumTokensMetadata);
@@ -114,6 +113,7 @@ const token24HrPricesQuery = (yesterdayUTC)=>{
                 Trade {
                   Buy {
                     PriceInUSD
+                    Amount
                   }
                 }
               }
@@ -136,14 +136,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$tokensData$2e$
 const { BITQUERY_ACCESS_TOKEN, BITQUERY_GRAPHQL_URL } = process.env;
 async function POST() {
     if (!BITQUERY_ACCESS_TOKEN || !BITQUERY_GRAPHQL_URL) {
-        console.error("Missing Bitquery Access Token or URL");
         return new Response(JSON.stringify({
             error: "Missing Bitquery Access Token or URL"
         }), {
             status: 500
         });
     }
-    const yesterdayUTC = new Date(Date.now() - 86400000).toISOString();
+    const yesterdayUTC = new Date(Date.now() - 86400000).toISOString(); // subtract 86400000, which is 24 hours in ms
     const queries = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$queries$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["token24HrPricesQuery"])(yesterdayUTC);
     try {
         const formattedData = await Promise.all(queries.map(async (query, index)=>{
@@ -164,28 +163,34 @@ async function POST() {
             const data = await response.json();
             const tokenData = data.data.EVM.DEXTrades;
             if (!tokenData) return null;
-            const prices = tokenData.map((item)=>item?.Trade?.Buy?.PriceInUSD || 0);
+            let volume = 0;
+            const prices = tokenData.map((item)=>{
+                volume += +item.Trade.Buy.Amount; // type cast string to number
+                return item.Trade.Buy.PriceInUSD ?? 0;
+            });
             const maxPrice = Math.max(...prices);
             const minPrice = Math.min(...prices);
             const firstPrice = prices[0] ?? 0;
             const lastPrice = prices[prices.length - 1] ?? 0;
-            const numBuys = prices.length;
             const symbol = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$tokensData$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["topEthereumTokenSymbols"][index] ?? "";
             const name = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$tokensData$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["topEthereumTokensMetadata"][symbol]?.name ?? "";
             return {
                 name: name,
                 symbol: symbol,
                 currPriceUSD: firstPrice,
-                volatility: estimateVolatility({
+                //   volatility: estimateVolatility({ high: maxPrice, low: minPrice }),
+                volatility: garmanKlassVolatility({
                     high: maxPrice,
-                    low: minPrice
+                    low: minPrice,
+                    open: lastPrice,
+                    close: firstPrice
                 }),
                 priceMove: lastPrice === 0 ? 0 : (firstPrice - lastPrice) / lastPrice,
-                volume: numBuys
+                volume: volume.toFixed(3)
             };
         }));
         // remove any null entries
-        const result = formattedData.filter((item)=>item !== null);
+        const result = formattedData.filter((data)=>data !== null);
         return new Response(JSON.stringify(result), {
             status: 200,
             headers: {
@@ -201,16 +206,16 @@ async function POST() {
         });
     }
 }
-// using parkinson’s volatility estimator (https://www.ivolatility.com/education/parkinsons-historical-volatility/)
-function estimateVolatility({ high, low, timePeriod = 1 }) {
-    console.log(high);
-    console.log(low);
-    const lowVal = low !== 0 ? low : 0.0001;
-    if (high <= 0 || lowVal < 0 || high <= low) {
-        throw new Error("Invalid high or low price values.");
+// using the Garman-Klass formula - good for a fixed trading period (https://www.algomatictrading.com/post/garman-klass-volatility)
+function garmanKlassVolatility({ high, low, open, close, timePeriod = 1 }) {
+    if (high <= 0 || low <= 0 || open <= 0 || close <= 0) {
+        console.error("Invalid price values");
+        return 0;
     }
-    const volatility = (Math.log(high) - Math.log(low)) / Math.sqrt(4 * Math.log(2) * timePeriod);
-    return volatility;
+    const term1 = 0.5 * Math.pow(Math.log(high / low), 2);
+    const term2 = (2 * Math.log(2) - 1) * Math.pow(Math.log(close / open), 2);
+    const volatility = Math.sqrt((term1 - term2) / timePeriod);
+    return volatility > 0 ? volatility : Number.EPSILON;
 }
 }}),
 "[project]/ (server-utils)": ((__turbopack_context__) => {

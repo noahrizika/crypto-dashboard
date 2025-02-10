@@ -20,22 +20,22 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function TokenVolumeBarChart({
+export default function TokenVolatilityBarChart({
   tokensData,
 }: {
   tokensData: TokenPrices[];
 }) {
   const chartData = tokensData.map((token) => ({
     symbol: token.symbol,
-    volume: token.volume,
+    volatility: token.volatility.toFixed(4),
   }));
 
   return (
     <CardContent>
       <CardTitle className="text-center font-normal text-muted-foreground">
-        Token Volume (24 Hrs)
+        Token Volatility of the Latest 24 Hour Period
       </CardTitle>
-      <ChartContainer config={chartConfig}>
+      <ChartContainer className="h-[300px]" config={chartConfig}>
         <BarChart
           width={600}
           height={400}
@@ -60,7 +60,7 @@ export default function TokenVolumeBarChart({
             axisLine={false}
             tick={{ fill: "var(--muted-foreground)" }}
             label={{
-              value: "Number of Trades",
+              value: "Token Volatility (%)",
               angle: -90,
               position: "insideLeft",
               offset: -10,
@@ -72,9 +72,9 @@ export default function TokenVolumeBarChart({
             }}
           />
 
-          <Bar dataKey="volume" fill="#82ca9d" radius={[8, 8, 0, 0]}>
+          <Bar dataKey="volatility" fill="#82ca9d" radius={[8, 8, 0, 0]}>
             <LabelList
-              dataKey="volume"
+              dataKey="volatility"
               position="top"
               className="fill-muted-foreground"
               fontSize={12}

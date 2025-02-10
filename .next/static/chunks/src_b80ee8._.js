@@ -1,4 +1,4 @@
-(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push(["static/chunks/src_719ba7._.js", {
+(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push(["static/chunks/src_b80ee8._.js", {
 
 "[project]/src/lib/utils.ts [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -193,14 +193,14 @@ function TokenPricesTable({ tokensData }) {
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
-                            children: "Volatility"
+                            children: "Volume (Per 24 Hours)"
                         }, void 0, false, {
                             fileName: "[project]/src/components/dashboard/dataVisualizations/tokenPricesTable.tsx",
                             lineNumber: 24,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
-                            children: "Price Move"
+                            children: "Price Move (%)"
                         }, void 0, false, {
                             fileName: "[project]/src/components/dashboard/dataVisualizations/tokenPricesTable.tsx",
                             lineNumber: 25,
@@ -244,23 +244,29 @@ function TokenPricesTable({ tokensData }) {
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
-                                children: Math.round(token.volatility) + "%"
+                                children: Math.round(token.volume)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/dashboard/dataVisualizations/tokenPricesTable.tsx",
                                 lineNumber: 34,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
-                                children: token.priceMove.toFixed(5) + "%"
-                            }, void 0, false, {
+                                children: [
+                                    token.priceMove.toFixed(5),
+                                    "%"
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/components/dashboard/dataVisualizations/tokenPricesTable.tsx",
                                 lineNumber: 35,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
                                 className: "text-right",
-                                children: token.currPriceUSD.toFixed(3)
-                            }, void 0, false, {
+                                children: [
+                                    "$",
+                                    token.currPriceUSD.toFixed(3)
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/components/dashboard/dataVisualizations/tokenPricesTable.tsx",
                                 lineNumber: 36,
                                 columnNumber: 13
@@ -726,13 +732,13 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_refresh__.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
-"[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx [app-client] (ecmascript)": ((__turbopack_context__) => {
+"[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, b: __turbopack_worker_blob_url__, g: global, __dirname, k: __turbopack_refresh__, m: module, z: __turbopack_require_stub__ } = __turbopack_context__;
 {
 __turbopack_esm__({
-    "default": (()=>TokenVolumeBarChart)
+    "default": (()=>TokenVolatilityBarChart)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/ui/card.tsx [app-client] (ecmascript)");
@@ -754,18 +760,18 @@ const chartConfig = {
         color: "#ffffff"
     }
 };
-function TokenVolumeBarChart({ tokensData }) {
+function TokenVolatilityBarChart({ tokensData }) {
     const chartData = tokensData.map((token)=>({
             symbol: token.symbol,
-            volume: token.volatility
+            volatility: token.volatility.toFixed(4)
         }));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
                 className: "text-center font-normal text-muted-foreground",
-                children: "Token Volume (24 Hrs)"
+                children: "Token Volatility of the Latest 24 Hour Period"
             }, void 0, false, {
-                fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                 lineNumber: 35,
                 columnNumber: 7
             }, this),
@@ -787,7 +793,7 @@ function TokenVolumeBarChart({ tokensData }) {
                             strokeDasharray: "3 3",
                             vertical: false
                         }, void 0, false, {
-                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                             lineNumber: 50,
                             columnNumber: 11
                         }, this),
@@ -800,7 +806,7 @@ function TokenVolumeBarChart({ tokensData }) {
                                 fill: "var(--muted-foreground)"
                             }
                         }, void 0, false, {
-                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                             lineNumber: 51,
                             columnNumber: 11
                         }, this),
@@ -811,7 +817,7 @@ function TokenVolumeBarChart({ tokensData }) {
                                 fill: "var(--muted-foreground)"
                             },
                             label: {
-                                value: "Number of Trades",
+                                value: "Token Volatility (%)",
                                 angle: -90,
                                 position: "insideLeft",
                                 offset: -10,
@@ -822,12 +828,12 @@ function TokenVolumeBarChart({ tokensData }) {
                                 }
                             }
                         }, void 0, false, {
-                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                             lineNumber: 58,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Bar"], {
-                            dataKey: "volume",
+                            dataKey: "volatility",
                             fill: "#82ca9d",
                             radius: [
                                 8,
@@ -836,41 +842,41 @@ function TokenVolumeBarChart({ tokensData }) {
                                 0
                             ],
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$LabelList$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["LabelList"], {
-                                dataKey: "volume",
+                                dataKey: "volatility",
                                 position: "top",
                                 className: "fill-muted-foreground",
                                 fontSize: 12
                             }, void 0, false, {
-                                fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                                fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                                 lineNumber: 76,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
-                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                            fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                             lineNumber: 75,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
-                    fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                    fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                     lineNumber: 39,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
-                fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+                fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
                 lineNumber: 38,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx",
+        fileName: "[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx",
         lineNumber: 34,
         columnNumber: 5
     }, this);
 }
-_c = TokenVolumeBarChart;
+_c = TokenVolatilityBarChart;
 var _c;
-__turbopack_refresh__.register(_c, "TokenVolumeBarChart");
+__turbopack_refresh__.register(_c, "TokenVolatilityBarChart");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_refresh__.registerExports(module, globalThis.$RefreshHelpers$);
 }
@@ -886,7 +892,7 @@ __turbopack_esm__({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$dataVisualizations$2f$tokenPricesTable$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/dashboard/dataVisualizations/tokenPricesTable.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$dataVisualizations$2f$tokenVolumeBarChart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/dashboard/dataVisualizations/tokenVolumeBarChart.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$dataVisualizations$2f$tokenVolatilityBarChart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/dashboard/dataVisualizations/tokenVolatilityBarChart.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_refresh__.signature();
 "use client";
@@ -914,7 +920,7 @@ const Dashboard = ()=>{
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            console.error("ERROR:", error.message);
+            console.error("error fetching token data:", error.message);
         } finally{
             setLoading(false);
         }
@@ -952,7 +958,7 @@ const Dashboard = ()=>{
                         lineNumber: 52,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$dataVisualizations$2f$tokenVolumeBarChart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$dataVisualizations$2f$tokenVolatilityBarChart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         tokensData: tokensData
                     }, void 0, false, {
                         fileName: "[project]/src/components/dashboard/dashboardWrapper.tsx",
@@ -967,7 +973,7 @@ const Dashboard = ()=>{
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 className: "text-muted-foreground",
-                children: "Live ETH Token Price Data (Updated Every 6 Seconds)"
+                children: "Live ETH Token Price Data on the Latest 24 Hour Period (Updated Every 6 Seconds)"
             }, void 0, false, {
                 fileName: "[project]/src/components/dashboard/dashboardWrapper.tsx",
                 lineNumber: 55,
@@ -992,4 +998,4 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 }}),
 }]);
 
-//# sourceMappingURL=src_719ba7._.js.map
+//# sourceMappingURL=src_b80ee8._.js.map

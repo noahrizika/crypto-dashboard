@@ -440,6 +440,10 @@ body {
   height: .625rem;
 }
 
+.h-\[300px\] {
+  height: 300px;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }

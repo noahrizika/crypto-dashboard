@@ -1,5 +1,4 @@
 import Dashboard from "@/components/dashboard/dashboardWrapper";
-import { Suspense } from "react";
 
 export default function HomePage() {
   return (
@@ -9,9 +8,7 @@ export default function HomePage() {
           Real-Time <span className="text-[hsl(280,100%,70%)]">Crypto</span>{" "}
           Updates
         </h1>
-        <Suspense fallback={<div>loading...</div>}>
-          <Dashboard></Dashboard>
-        </Suspense>
+        <Dashboard></Dashboard>
       </div>
     </main>
   );

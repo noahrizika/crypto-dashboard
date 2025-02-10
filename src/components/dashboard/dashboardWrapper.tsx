@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import { type TokenPrices } from "@/lib/types";
 import TokenPricesTable from "./dataVisualizations/tokenPricesTable";
-import TokenVolumeBarChart from "./dataVisualizations/tokenVolumeBarChart";
+import TokenVolatilityBarChart from "./dataVisualizations/tokenVolatilityBarChart";
 
 const Dashboard = () => {
   const [tokensData, setTokensData] = useState<TokenPrices[]>([]);
@@ -25,12 +25,11 @@ const Dashboard = () => {
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data: TokenPrices[] = await response.json();
-      console.log("RESPONSE:", data);
       setTokensData(data);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      console.error("ERROR:", error.message);
+      console.error("error fetching token data:", error.message);
     } finally {
       setLoading(false);
     }
@@ -51,10 +50,11 @@ const Dashboard = () => {
     <>
       <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2 md:gap-x-8">
         <TokenPricesTable tokensData={tokensData} />
-        <TokenVolumeBarChart tokensData={tokensData} />
+        <TokenVolatilityBarChart tokensData={tokensData} />
       </div>
       <span className="text-muted-foreground">
-        Live ETH Token Price Data (Updated Every 6 Seconds)
+        Live ETH Token Price Data on the Latest 24 Hour Period (Updated Every 6
+        Seconds)
       </span>
     </>
   );

@@ -5,11 +5,8 @@ export interface BitqueryPriceResponse {
       Array<{
         Trade: {
           Buy: {
-            Currency: {
-              Name: string;
-              Symbol: string;
-            };
             PriceInUSD: number;
+            Amount: string;
           };
         };
       }>

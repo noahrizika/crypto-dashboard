@@ -13,6 +13,7 @@ export const token24HrPricesQuery = (yesterdayUTC: string) => {
                 Trade {
                   Buy {
                     PriceInUSD
+                    Amount
                   }
                 }
               }

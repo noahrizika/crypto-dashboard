@@ -3,20 +3,19 @@ import {
   topEthereumTokensMetadata,
   topEthereumTokenSymbols,
 } from "@/lib/tokensData";
-import { type TokenPrices, type BitqueryPriceResponse } from "@/lib/types";
+import { BitqueryPriceResponse } from "@/lib/types";
 
 const { BITQUERY_ACCESS_TOKEN, BITQUERY_GRAPHQL_URL } = process.env;
 
 export async function POST(): Promise<Response> {
   if (!BITQUERY_ACCESS_TOKEN || !BITQUERY_GRAPHQL_URL) {
-    console.error("Missing Bitquery Access Token or URL");
     return new Response(
       JSON.stringify({ error: "Missing Bitquery Access Token or URL" }),
       { status: 500 },
     );
   }
 
-  const yesterdayUTC = new Date(Date.now() - 86400000).toISOString();
+  const yesterdayUTC = new Date(Date.now() - 86400000).toISOString(); // subtract 86400000, which is 24 hours in ms
   const queries = token24HrPricesQuery(yesterdayUTC);
 
   try {
@@ -42,14 +41,16 @@ export async function POST(): Promise<Response> {
         const tokenData = data.data.EVM.DEXTrades;
         if (!tokenData) return null;
 
-        const prices = tokenData.map(
-          (item) => item?.Trade?.Buy?.PriceInUSD || 0,
-        );
+        let volume = 0;
+        const prices = tokenData.map((item) => {
+          volume += +item.Trade.Buy.Amount; // type cast string to number
+          return item.Trade.Buy.PriceInUSD ?? 0;
+        });
+
         const maxPrice = Math.max(...prices);
         const minPrice = Math.min(...prices);
         const firstPrice = prices[0] ?? 0;
         const lastPrice = prices[prices.length - 1] ?? 0;
-        const numBuys = prices.length;
         const symbol = topEthereumTokenSymbols[index] ?? "";
         const name = topEthereumTokensMetadata[symbol]?.name ?? "";
 
@@ -57,17 +58,20 @@ export async function POST(): Promise<Response> {
           name: name,
           symbol: symbol,
           currPriceUSD: firstPrice,
-          volatility: estimateVolatility({ high: maxPrice, low: minPrice }),
+          volatility: garmanKlassVolatility({
+            high: maxPrice,
+            low: minPrice,
+            open: lastPrice,
+            close: firstPrice,
+          }),
           priceMove: lastPrice === 0 ? 0 : (firstPrice - lastPrice) / lastPrice,
-          volume: numBuys,
+          volume: volume.toFixed(3),
         };
       }),
     );
 
     // remove any null entries
-    const result = formattedData.filter(
-      (item): item is TokenPrices => item !== null,
-    );
+    const result = formattedData.filter((data) => data !== null);
 
     return new Response(JSON.stringify(result), {
       status: 200,
@@ -82,24 +86,28 @@ export async function POST(): Promise<Response> {
   }
 }
 
-// using parkinson’s volatility estimator (https://www.ivolatility.com/education/parkinsons-historical-volatility/)
-function estimateVolatility({
+// using the Garman-Klass formula - good for a fixed trading period (https://www.algomatictrading.com/post/garman-klass-volatility)
+function garmanKlassVolatility({
   high,
   low,
-  timePeriod = 1, // default is 24 hours (aka 1 trading day)
+  open,
+  close,
+  timePeriod = 1,
 }: {
   high: number;
   low: number;
-  timePeriod?: number; // user can modify the period for future frontend scalability
-}): number {
-  console.log(high);
-  console.log(low);
-  const lowVal = low !== 0 ? low : 0.0001;
-  if (high <= 0 || lowVal < 0 || high <= low) {
-    throw new Error("Invalid high or low price values.");
+  open: number;
+  close: number;
+  timePeriod?: number;
+}) {
+  if (high <= 0 || low <= 0 || open <= 0 || close <= 0) {
+    console.error("Invalid price values");
+    return 0;
   }
 
-  const volatility =
-    (Math.log(high) - Math.log(low)) / Math.sqrt(4 * Math.log(2) * timePeriod);
-  return volatility;
+  const term1 = 0.5 * Math.pow(Math.log(high / low), 2);
+  const term2 = (2 * Math.log(2) - 1) * Math.pow(Math.log(close / open), 2);
+  const volatility = Math.sqrt((term1 - term2) / timePeriod);
+
+  return volatility > 0 ? volatility : Number.EPSILON;
 }
