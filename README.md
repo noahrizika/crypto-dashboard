@@ -55,13 +55,13 @@ Errors with API fetching are handled gracefully with try...catch statements
 **Perfomance Optimizations and Latency**
 
 *Concurrency*  
-The array.**map()** function is used asynchronously to fetch data from BitQuery, expediting the delivery of data (for reference, see [here](https://stackoverflow.com/questions/43691808/http-performance-many-small-requests-or-one-big-one))
+The array.**map()** function is used asynchronously to fetch data from BitQuery, expediting the delivery of data.
 
 *Low Latency*  
-Fetching price data for one token from Bitquery's IDE takes around **1.500s**. Fetching price data on two tokens takes over twice as long (~3.200s). Therefore, by individually and asynchronously querying tokens' price data, responses arrive with minimal latency. Further, the backend is easily scalable and can handle many more queries while maintaining low latency.
+Fetching price data for one token from Bitquery's IDE takes around **1.500s**. Fetching price data on two tokens takes over twice as long (~3.200s). Therefore, by individually and asynchronously querying tokens' price data, responses arrive with minimal latency. Further, the backend is easily scalable and can handle many more queries while maintaining low latency (for reference, see [here](https://stackoverflow.com/questions/43691808/http-performance-many-small-requests-or-one-big-one)).
 
-*Most Recent Data*
-Using setInterval() instead of setTimeout() to ensure live updates every six seconds, regardless of potentially delayed fetched data.
+*Most Recent Data*  
+Using setInterval() instead of setTimeout() to ensure live updates every six seconds, regardless of potentially-delayed fetched data.
 
 *Isolation of Client Components*  
 Only the data visualizations are rerendered once new data is fetched—-not the entire webpage. Further, the client components created are as lightweight as possible, while still maintaing full functionality.
